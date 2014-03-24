@@ -4,13 +4,7 @@ import java.io.Serializable;
 
 public enum EventType implements Serializable {
 
-  VACCINE("V", "Vaccination"), HISTORY_OF_DISEASE("H", "History of Disease"), CONTRAINDICATION("C", "Contraindication"), CONTRAINDICATION_ALERGY_TO_PREVIOUS_DOSE(
-      "1", "Contraindication - Allergy Previous Dose"), CONTRAINDICATION_ALERGY_VACCINE_COMPONENT("2",
-      "Contraindication - Allergy Vaccine Component"), CONTRAINDICATION_RISK_FACTOR("3",
-      "Contraindication - Risk Factor"), CONTRAINDICATION_UNSPECIFIED("4", "Contraindication - Unspecified"), IMMUNITY(
-      "I", "Immunity"), PRECAUTION("P", "Precaution"), REFUSAL("R", "Refusal"), RELIGIOUS_EXEMPTION("E",
-      "Religious Exemption"), SPECIAL_INDICATION("S", "Special Indication"), ;
-
+  VACCINE("V", "Vaccination"), HISTORY_OF_DISEASE("H", "History of Disease"), CONTRAINDICATION("C", "Contraindication"), ;
   private static final long serialVersionUID = 1L;
 
   private String eventTypeCode = "";

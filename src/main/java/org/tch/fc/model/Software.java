@@ -3,11 +3,10 @@ package org.tch.fc.model;
 import java.io.Serializable;
 import java.util.List;
 
-public class Software implements Serializable
-{
+public class Software implements Serializable {
 
   private static final long serialVersionUID = 1L;
-
+  
   public static final String VISIBLE_STATUS_VISIBLE = "V";
   public static final String VISIBLE_STATUS_RESTRICTED = "R";
   public static final String VISIBLE_STATUS_CLOSED = "X";
@@ -18,7 +17,7 @@ public class Software implements Serializable
   private Service service = null;
   private String scheduleName = "";
   private String visibleStatus = "";
-
+  
   private List<SoftwareSetting> softwareSettingList = null;
 
   public List<SoftwareSetting> getSoftwareSettingList() {
@@ -36,16 +35,19 @@ public class Software implements Serializable
   public void setVisibleStatus(String visibleStatus) {
     this.visibleStatus = visibleStatus;
   }
-
-  public boolean isVisibleStatusVisible() {
+  
+  public boolean isVisibleStatusVisible()
+  {
     return VISIBLE_STATUS_VISIBLE.equals(visibleStatus);
   }
 
-  public boolean isVisibleStatusRestricted() {
+  public boolean isVisibleStatusRestricted()
+  {
     return VISIBLE_STATUS_RESTRICTED.equals(visibleStatus);
   }
 
-  public boolean isVisibleStatusClosed() {
+  public boolean isVisibleStatusClosed()
+  {
     return VISIBLE_STATUS_CLOSED.equals(visibleStatus);
   }
 
@@ -100,14 +102,5 @@ public class Software implements Serializable
   @Override
   public String toString() {
     return label;
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj instanceof Software) {
-      Software s = (Software) obj;
-      return (s.getSoftwareId() == 0 && super.equals(obj)) || this.getSoftwareId() == s.getSoftwareId();
-    }
-    return super.equals(obj);
   }
 }

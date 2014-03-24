@@ -2,7 +2,7 @@ package org.tch.fc;
 
 import java.util.List;
 
-import org.tch.fc.model.VaccineGroup;
+import org.tch.fc.model.ForecastItem;
 import org.tch.fc.model.Service;
 import org.tch.fc.model.Software;
 
@@ -11,10 +11,10 @@ public class ConnectFactory {
   
   public static ConnectorInterface createConnecter(Software software) throws Exception
   {
-    return createConnecter(software, VaccineGroup.getForecastItemList());
+    return createConnecter(software, ForecastItem.getForecastItemList());
   }
   
-  public static ConnectorInterface createConnecter(Software software, List<VaccineGroup> forecastItemList) throws Exception
+  public static ConnectorInterface createConnecter(Software software, List<ForecastItem> forecastItemList) throws Exception
   {
     
     if (software.getService() == Service.TCH)

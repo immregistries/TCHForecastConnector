@@ -11,8 +11,7 @@ import org.junit.Test;
 import org.tch.fc.ICEConnector;
 import org.tch.fc.model.Event;
 import org.tch.fc.model.ForecastActual;
-import org.tch.fc.model.SoftwareResult;
-import org.tch.fc.model.VaccineGroup;
+import org.tch.fc.model.ForecastItem;
 import org.tch.fc.model.Software;
 import org.tch.fc.model.TestCase;
 import org.tch.fc.model.TestEvent;
@@ -26,13 +25,12 @@ public class TestICEConnector extends junit.framework.TestCase {
 
     Software software = new Software();
     software.setServiceUrl("http://tchforecasttester.org/ice/evaluate");
-    ICEConnector iceConnector = new ICEConnector(software, VaccineGroup.getForecastItemList());
-    iceConnector.setLogText(true);
-    List<ForecastActual> forecastActualList = iceConnector.queryForForecast(testCase, new SoftwareResult());
+    ICEConnector iceConnector = new ICEConnector(software, ForecastItem.getForecastItemList());
+    List<ForecastActual> forecastActualList = iceConnector.queryForForecast(testCase);
     assertEquals(24, forecastActualList.size());
     for (ForecastActual forecastActual : forecastActualList) {
-      System.out.println("--> Forecasting for " + forecastActual.getVaccineGroup().getLabel());
-      System.out.println(forecastActual.getSoftwareResult().getLogText());
+      System.out.println("--> Forecasting for " + forecastActual.getForecastItem().getLabel());
+      System.out.println(forecastActual.getLogText());
     }
   }
 
@@ -48,7 +46,7 @@ public class TestICEConnector extends junit.framework.TestCase {
     String exampleReturn = sb.toString();
 
     Software software = new Software();
-    ICEConnector iceConnector = new ICEConnector(software, VaccineGroup.getForecastItemList());
+    ICEConnector iceConnector = new ICEConnector(software, ForecastItem.getForecastItemList());
     List<ForecastActual> forecastActualList = iceConnector.readVMR(exampleReturn);
     assertEquals(8, forecastActualList.size());
   }
@@ -146,7 +144,7 @@ public class TestICEConnector extends junit.framework.TestCase {
     TestCase testCase = createTestCase(sdf);
 
     Software software = new Software();
-    List<VaccineGroup> forecastItemList = new ArrayList<VaccineGroup>();
+    List<ForecastItem> forecastItemList = new ArrayList<ForecastItem>();
     ICEConnector iceConnector = new ICEConnector(software, forecastItemList);
     assertEquals(EXAMPLE, iceConnector.makeVMR(testCase));
   }

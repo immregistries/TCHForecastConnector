@@ -6,21 +6,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VaccineGroup implements Serializable {
+public class ForecastItem implements Serializable {
 
-  public VaccineGroup() {
+  public ForecastItem() {
     // default;
   }
 
-  public VaccineGroup(int forecastItemId, String label, String vaccineCvx) {
-    this.vaccineGroupId = forecastItemId;
+  public ForecastItem(int forecastItemId, String label, String vaccineCvx) {
+    this.forecastItemId = forecastItemId;
     this.label = label;
     this.vaccineCvx = vaccineCvx;
   }
 
   private static final long serialVersionUID = 1L;
 
-  private int vaccineGroupId = 0;
+  private int forecastItemId = 0;
   private String label = "";
   private String vaccineCvx = "";
   private List<EvaluationActual> evaluationActualList = null;
@@ -43,8 +43,6 @@ public class VaccineGroup implements Serializable {
 
   public static final int ID_DTAP = 2;
   public static final int ID_INFLUENZA = 3;
-  public static final int ID_INFLUENZA_IIV = 34;
-  public static final int ID_INFLUENZA_LAIV = 33;
   public static final int ID_HEPA = 4;
   public static final int ID_HEPB = 5;
   public static final int ID_HIB = 6;
@@ -75,46 +73,46 @@ public class VaccineGroup implements Serializable {
   public static final int ID_RABIES = 31;
   public static final int ID_YELLOW_FEVER = 32;
 
-  private static List<VaccineGroup> forecastItemList = null;
-  private static Map<Integer, VaccineGroup> forecastItemMap = null;
+  private static List<ForecastItem> forecastItemList = null;
+  private static Map<Integer, ForecastItem> forecastItemMap = null;
   
-  public static final VaccineGroup getForecastItem(int id)
+  public static final ForecastItem getForecastItem(int id)
   {
     getForecastItemList();
     return forecastItemMap.get(id);
   }
 
-  public static final List<VaccineGroup> getForecastItemList() {
+  public static final List<ForecastItem> getForecastItemList() {
     if (forecastItemList == null) {
-      forecastItemList = new ArrayList<VaccineGroup>();
-      forecastItemList.add(new VaccineGroup(ID_DTAP, "DTaP", "20"));
-      forecastItemList.add(new VaccineGroup(ID_INFLUENZA, "Influenza", "88"));
-      forecastItemList.add(new VaccineGroup(ID_HEPA, "HepA", "85"));
-      forecastItemList.add(new VaccineGroup(ID_HEPB, "HepB", "45"));
-      forecastItemList.add(new VaccineGroup(ID_HIB, "Hib", "17"));
-      forecastItemList.add(new VaccineGroup(ID_HPV, "HPV", "137"));
-      forecastItemList.add(new VaccineGroup(ID_MENING, "Meningococcal", "108"));
-      forecastItemList.add(new VaccineGroup(ID_MMR, "MMR", "03"));
-      forecastItemList.add(new VaccineGroup(ID_PNEUMO, "Pneumococcal", "152"));
-      forecastItemList.add(new VaccineGroup(ID_POLIO, "Polio", "89"));
-      forecastItemList.add(new VaccineGroup(ID_ROTA, "Rotavirus", "122"));
-      forecastItemList.add(new VaccineGroup(ID_VAR, "Varicella", "21"));
-      forecastItemList.add(new VaccineGroup(ID_ZOSTER, "HerpesZoster", "121"));
-      forecastItemList.add(new VaccineGroup(ID_TDAP_TD, "Td or Tdap", "139"));
-      forecastItemList.add(new VaccineGroup(ID_PPSV, "PPSV", "33"));
-      forecastItemList.add(new VaccineGroup(ID_PCV, "PCV", "152"));
-      forecastItemList.add(new VaccineGroup(ID_TD_ONLY, "Td Only", "139"));
-      forecastItemList.add(new VaccineGroup(ID_DTAP_TDAP_TD, "DTaP, Tdap or Td", "20"));
-      forecastItemList.add(new VaccineGroup(ID_HEPB_2_ONLY, "Hep B 2 Dose Only", "43"));
-      forecastItemList.add(new VaccineGroup(ID_HEPB_3_ONLY, "Hep B 3 Dose Only", "08"));
-      forecastItemList.add(new VaccineGroup(ID_MEASLES_ONLY, "Measles Only", "05"));
-      forecastItemList.add(new VaccineGroup(ID_MUMPS_ONLY, "Mumps Only", "07"));
-      forecastItemList.add(new VaccineGroup(ID_RUBELLA_ONLY, "Rubella Only", "06"));
-      forecastItemList.add(new VaccineGroup(ID_TDAP_ONLY, "Tdap Only", "115"));
-      forecastItemMap = new HashMap<Integer, VaccineGroup>();
-      for (VaccineGroup forecastItem : forecastItemList)
+      forecastItemList = new ArrayList<ForecastItem>();
+      forecastItemList.add(new ForecastItem(ID_DTAP, "DTaP", "20"));
+      forecastItemList.add(new ForecastItem(ID_INFLUENZA, "Influenza", "88"));
+      forecastItemList.add(new ForecastItem(ID_HEPA, "HepA", "85"));
+      forecastItemList.add(new ForecastItem(ID_HEPB, "HepB", "45"));
+      forecastItemList.add(new ForecastItem(ID_HIB, "Hib", "17"));
+      forecastItemList.add(new ForecastItem(ID_HPV, "HPV", "137"));
+      forecastItemList.add(new ForecastItem(ID_MENING, "Meningococcal", "108"));
+      forecastItemList.add(new ForecastItem(ID_MMR, "MMR", "03"));
+      forecastItemList.add(new ForecastItem(ID_PNEUMO, "Pneumococcal", "152"));
+      forecastItemList.add(new ForecastItem(ID_POLIO, "Polio", "89"));
+      forecastItemList.add(new ForecastItem(ID_ROTA, "Rotavirus", "122"));
+      forecastItemList.add(new ForecastItem(ID_VAR, "Varicella", "21"));
+      forecastItemList.add(new ForecastItem(ID_ZOSTER, "HerpesZoster", "121"));
+      forecastItemList.add(new ForecastItem(ID_TDAP_TD, "Td or Tdap", "139"));
+      forecastItemList.add(new ForecastItem(ID_PPSV, "PPSV", "33"));
+      forecastItemList.add(new ForecastItem(ID_PCV, "PCV", "152"));
+      forecastItemList.add(new ForecastItem(ID_TD_ONLY, "Td Only", "139"));
+      forecastItemList.add(new ForecastItem(ID_DTAP_TDAP_TD, "DTaP, Tdap or Td", "20"));
+      forecastItemList.add(new ForecastItem(ID_HEPB_2_ONLY, "Hep B 2 Dose Only", "43"));
+      forecastItemList.add(new ForecastItem(ID_HEPB_3_ONLY, "Hep B 3 Dose Only", "08"));
+      forecastItemList.add(new ForecastItem(ID_MEASLES_ONLY, "Measles Only", "05"));
+      forecastItemList.add(new ForecastItem(ID_MUMPS_ONLY, "Mumps Only", "07"));
+      forecastItemList.add(new ForecastItem(ID_RUBELLA_ONLY, "Rubella Only", "06"));
+      forecastItemList.add(new ForecastItem(ID_TDAP_ONLY, "Tdap Only", "115"));
+      forecastItemMap = new HashMap<Integer, ForecastItem>();
+      for (ForecastItem forecastItem : forecastItemList)
       {
-        forecastItemMap.put(forecastItem.getVaccineGroupId(), forecastItem);
+        forecastItemMap.put(forecastItem.getForecastItemId(), forecastItem);
       }
     }
     return forecastItemList;
@@ -130,7 +128,7 @@ public class VaccineGroup implements Serializable {
   }
 
   private int[] initTypicalGivenYear() {
-    switch (vaccineGroupId) {
+    switch (forecastItemId) {
     case ID_DTAP:
       return new int[] { 0, 6 };
     case ID_INFLUENZA:
@@ -189,12 +187,12 @@ public class VaccineGroup implements Serializable {
     return getTypicalGivenYear()[1];
   }
 
-  public int getVaccineGroupId() {
-    return vaccineGroupId;
+  public int getForecastItemId() {
+    return forecastItemId;
   }
 
-  public void setVaccineGroupId(int forecastItemId) {
-    this.vaccineGroupId = forecastItemId;
+  public void setForecastItemId(int forecastItemId) {
+    this.forecastItemId = forecastItemId;
   }
 
   public String getLabel() {
@@ -208,15 +206,15 @@ public class VaccineGroup implements Serializable {
   @Override
   public boolean equals(Object obj) {
 
-    if (obj instanceof VaccineGroup) {
-      return ((VaccineGroup) obj).getVaccineGroupId() == this.getVaccineGroupId();
+    if (obj instanceof ForecastItem) {
+      return ((ForecastItem) obj).getForecastItemId() == this.getForecastItemId();
     }
     return false;
   }
 
   @Override
   public int hashCode() {
-    return vaccineGroupId == 0 ? super.hashCode() : vaccineGroupId;
+    return forecastItemId == 0 ? super.hashCode() : forecastItemId;
   }
 
   @Override

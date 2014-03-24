@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TestCase implements Serializable
-{
+public class TestCase implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
@@ -23,34 +22,18 @@ public class TestCase implements Serializable
   private Date patientDob = null;
   private String categoryName = null;
   private String testCaseNumber = "";
-  private EvaluationType evaluationType = null;
-  private ForecastType forecastType = null;
-
-  public EvaluationType getEvaluationType() {
-    return evaluationType;
-  }
-
-  public void setEvaluationType(EvaluationType evaluationType) {
-    this.evaluationType = evaluationType;
-  }
-
-  public ForecastType getForecastType() {
-    return forecastType;
-  }
-
-  public void setForecastType(ForecastType forecastType) {
-    this.forecastType = forecastType;
-  }
 
   private List<TestEvent> testEventList = null;
 
   private List<TestCaseSetting> testCaseSettingList = null;
-
-  public TestCase() {
+  
+  public TestCase()
+  {
     // default;
   }
-
-  public TestCase(TestCase parentTestCase) {
+  
+  public TestCase(TestCase parentTestCase)
+  {
     this.setLabel(parentTestCase.getLabel());
     this.setDescription(parentTestCase.getDescription());
     this.setEvalDate(parentTestCase.getEvalDate());
@@ -60,14 +43,17 @@ public class TestCase implements Serializable
     this.setPatientDob(parentTestCase.getPatientDob());
     this.setCategoryName(parentTestCase.getCategoryName());
     this.setTestCaseNumber(parentTestCase.getTestCaseNumber());
-    if (parentTestCase.getTestEventList() != null) {
+    if (parentTestCase.getTestEventList() != null)
+    {
       List<TestEvent> testEventList = new ArrayList<TestEvent>(parentTestCase.getTestEventList().size());
-      for (TestEvent testEvent : parentTestCase.getTestEventList()) {
+      for (TestEvent testEvent : parentTestCase.getTestEventList())
+      {
         testEventList.add(new TestEvent(testEvent, this));
       }
       this.setTestEventList(testEventList);
     }
   }
+
 
   public String getTestCaseNumber() {
     return testCaseNumber;

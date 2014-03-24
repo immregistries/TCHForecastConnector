@@ -6,8 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.tch.fc.model.ForecastActual;
-import org.tch.fc.model.SoftwareResult;
-import org.tch.fc.model.VaccineGroup;
+import org.tch.fc.model.ForecastItem;
 import org.tch.fc.model.Service;
 import org.tch.fc.model.Software;
 import org.tch.fc.model.TestCase;
@@ -57,13 +56,13 @@ public class ForecastDemo {
     software.setServiceUrl(serviceUrl);
     software.setService(service);
 
-    ConnectorInterface connector = ConnectFactory.createConnecter(software, VaccineGroup.getForecastItemList());
-    List<ForecastActual> forecastActualList = connector.queryForForecast(testCase, new SoftwareResult());
+    ConnectorInterface connector = ConnectFactory.createConnecter(software, ForecastItem.getForecastItemList());
+    List<ForecastActual> forecastActualList = connector.queryForForecast(testCase);
 
     System.out.println("RAW RESULTS");
     System.out.println();
     if (forecastActualList.size() > 0) {
-      System.out.print(forecastActualList.get(0).getSoftwareResult().getLogText().toString());
+      System.out.print(forecastActualList.get(0).getLogText().toString());
     }
     System.out.println();
     System.out.println("RESULTS");
@@ -79,7 +78,7 @@ public class ForecastDemo {
     System.out.println("|");
     System.out.println("+----------------+------+------------+------------+------------+------------+-----+");
     for (ForecastActual forecastActual : forecastActualList) {
-      System.out.print(left(forecastActual.getVaccineGroup().getLabel(), 15));
+      System.out.print(left(forecastActual.getForecastItem().getLabel(), 15));
       System.out.print(left(forecastActual.getDoseNumber(), 5));
       System.out.print(left(forecastActual.getValidDate(), 11));
       System.out.print(left(forecastActual.getDueDate(), 11));

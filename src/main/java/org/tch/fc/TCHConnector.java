@@ -16,89 +16,54 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.tch.fc.model.Admin;
 import org.tch.fc.model.EvaluationActual;
 import org.tch.fc.model.EventType;
 import org.tch.fc.model.ForecastActual;
+import org.tch.fc.model.ForecastItem;
 import org.tch.fc.model.Software;
-import org.tch.fc.model.SoftwareResult;
 import org.tch.fc.model.SoftwareSetting;
 import org.tch.fc.model.TestCase;
 import org.tch.fc.model.TestCaseSetting;
 import org.tch.fc.model.TestEvent;
-import org.tch.fc.model.VaccineGroup;
 
 public class TCHConnector implements ConnectorInterface
 {
 
-  private static final String STATUS = " status ";
-  private static final String FINISHED = " finished ";
-  private static final String OVERDUE = " overdue ";
-  private static final String VALID = " valid ";
-  private static final String DUE = " due ";
-  private static final String DOSE = " dose ";
-  private static final String FORECASTING = "Forecasting ";
   private static final String VACCINATION_LINE_PREFIX = "Vaccination #";
-  private static final String DETAILS_FOR_PREFIX = "DETAILS FOR: ";
 
-  private static final String STATUS_DESCRIPTION_DUE_LATER = "due later";
-  private static final String STATUS_DESCRIPTION_DUE = "due";
-  private static final String STATUS_DESCRIPTION_OVERDUE = "overdue";
-  private static final String STATUS_DESCRIPTION_FINISHED = "finished";
-  private static final String STATUS_DESCRIPTION_COMPLETE = "complete";
-  private static final String STATUS_DESCRIPTION_CONTRAINDICATED = "contraindicated";
-  private static final String STATUS_DESCRIPTION_COMPLETE_FOR_SEASON = "complete for season";
-  private static final String STATUS_DESCRIPTION_ASSUMED_COMPLETE_OR_IMMUNIE = "assumed complete or immune";
-
-  private Map<String, List<VaccineGroup>> familyMapping = new HashMap<String, List<VaccineGroup>>();
+  private Map<String, List<ForecastItem>> familyMapping = new HashMap<String, List<ForecastItem>>();
 
   private Map<String, String> evaluationToCvxMapping = new HashMap<String, String>();
 
-  private Map<String, Admin> adminStatusMapping = new HashMap<String, Admin>();
-
   private Software software = null;
-  private boolean logText = false;
 
-  public boolean isLogText() {
-    return logText;
-  }
-
-  public void setLogText(boolean logText) {
-    this.logText = logText;
-  }
-
-  public TCHConnector(Software software, List<VaccineGroup> forecastItemList) {
+  public TCHConnector(Software software, List<ForecastItem> forecastItemList) {
     this.software = software;
-    addForcastItem(forecastItemList, "Hib", VaccineGroup.ID_HIB);
-    addForcastItem(forecastItemList, "HepB", VaccineGroup.ID_HEPB);
-    addForcastItem(forecastItemList, "DTaP", VaccineGroup.ID_DTAP);
-    addForcastItem(forecastItemList, "DTaP", VaccineGroup.ID_DTAP_TDAP_TD);
-    addForcastItem(forecastItemList, "Td", VaccineGroup.ID_TD_ONLY);
-    addForcastItem(forecastItemList, "Td", VaccineGroup.ID_TDAP_TD);
-    addForcastItem(forecastItemList, "Td", VaccineGroup.ID_DTAP_TDAP_TD);
-    addForcastItem(forecastItemList, "Tdap", VaccineGroup.ID_TDAP_ONLY);
-    addForcastItem(forecastItemList, "Tdap", VaccineGroup.ID_TDAP_TD);
-    addForcastItem(forecastItemList, "Tdap", VaccineGroup.ID_DTAP_TDAP_TD);
-    addForcastItem(forecastItemList, "IPV", VaccineGroup.ID_POLIO);
-    addForcastItem(forecastItemList, "HepA", VaccineGroup.ID_HEPA);
-    addForcastItem(forecastItemList, "MMR", VaccineGroup.ID_MMR);
-    addForcastItem(forecastItemList, "Measles", VaccineGroup.ID_MEASLES_ONLY);
-    addForcastItem(forecastItemList, "Mumps", VaccineGroup.ID_MUMPS_ONLY);
-    addForcastItem(forecastItemList, "Rubella", VaccineGroup.ID_RUBELLA_ONLY);
-    addForcastItem(forecastItemList, "Var", VaccineGroup.ID_VAR);
-    addForcastItem(forecastItemList, "Influenza", VaccineGroup.ID_INFLUENZA);
-    addForcastItem(forecastItemList, "Influenza", VaccineGroup.ID_INFLUENZA_IIV);
-    addForcastItem(forecastItemList, "Influenza", VaccineGroup.ID_INFLUENZA_LAIV);
-    addForcastItem(forecastItemList, "Influenza IIV", VaccineGroup.ID_INFLUENZA_IIV);
-    addForcastItem(forecastItemList, "Influenza IIV", VaccineGroup.ID_INFLUENZA);
-    addForcastItem(forecastItemList, "Influenza LAIV", VaccineGroup.ID_INFLUENZA_LAIV);
-    addForcastItem(forecastItemList, "MCV4", VaccineGroup.ID_MENING);
-    addForcastItem(forecastItemList, "HPV", VaccineGroup.ID_HPV);
-    addForcastItem(forecastItemList, "Rota", VaccineGroup.ID_ROTA);
-    addForcastItem(forecastItemList, "PCV13", VaccineGroup.ID_PNEUMO);
-    addForcastItem(forecastItemList, "PCV13", VaccineGroup.ID_PCV);
-    addForcastItem(forecastItemList, "Zoster", VaccineGroup.ID_ZOSTER);
-    addForcastItem(forecastItemList, "PPSV", VaccineGroup.ID_PPSV);
+    addForcastItem(forecastItemList, "Hib", ForecastItem.ID_HIB);
+    addForcastItem(forecastItemList, "HepB", ForecastItem.ID_HEPB);
+    addForcastItem(forecastItemList, "DTaP", ForecastItem.ID_DTAP);
+    addForcastItem(forecastItemList, "DTaP", ForecastItem.ID_DTAP_TDAP_TD);
+    addForcastItem(forecastItemList, "Td", ForecastItem.ID_TD_ONLY);
+    addForcastItem(forecastItemList, "Td", ForecastItem.ID_TDAP_TD);
+    addForcastItem(forecastItemList, "Td", ForecastItem.ID_DTAP_TDAP_TD);
+    addForcastItem(forecastItemList, "Tdap", ForecastItem.ID_TDAP_ONLY);
+    addForcastItem(forecastItemList, "Tdap", ForecastItem.ID_TDAP_TD);
+    addForcastItem(forecastItemList, "Tdap", ForecastItem.ID_DTAP_TDAP_TD);
+    addForcastItem(forecastItemList, "IPV", ForecastItem.ID_POLIO);
+    addForcastItem(forecastItemList, "HepA", ForecastItem.ID_HEPA);
+    addForcastItem(forecastItemList, "MMR", ForecastItem.ID_MMR);
+    addForcastItem(forecastItemList, "Measles", ForecastItem.ID_MEASLES_ONLY);
+    addForcastItem(forecastItemList, "Mumps", ForecastItem.ID_MUMPS_ONLY);
+    addForcastItem(forecastItemList, "Rubella", ForecastItem.ID_RUBELLA_ONLY);
+    addForcastItem(forecastItemList, "Var", ForecastItem.ID_VAR);
+    addForcastItem(forecastItemList, "Influenza", ForecastItem.ID_INFLUENZA);
+    addForcastItem(forecastItemList, "MCV4", ForecastItem.ID_MENING);
+    addForcastItem(forecastItemList, "HPV", ForecastItem.ID_HPV);
+    addForcastItem(forecastItemList, "Rota", ForecastItem.ID_ROTA);
+    addForcastItem(forecastItemList, "PCV13", ForecastItem.ID_PNEUMO);
+    addForcastItem(forecastItemList, "PCV13", ForecastItem.ID_PCV);
+    addForcastItem(forecastItemList, "Zoster", ForecastItem.ID_ZOSTER);
+    addForcastItem(forecastItemList, "PPSV", ForecastItem.ID_PPSV);
 
     evaluationToCvxMapping.put("Varicella", "21");
     evaluationToCvxMapping.put("Rubella", "06");
@@ -118,22 +83,14 @@ public class TCHConnector implements ConnectorInterface
     evaluationToCvxMapping.put("Zoster", "121");
     evaluationToCvxMapping.put("PPSV", "33");
 
-    adminStatusMapping.put(STATUS_DESCRIPTION_DUE_LATER, Admin.DUE_LATER);
-    adminStatusMapping.put(STATUS_DESCRIPTION_DUE, Admin.DUE);
-    adminStatusMapping.put(STATUS_DESCRIPTION_OVERDUE, Admin.OVERDUE);
-    adminStatusMapping.put(STATUS_DESCRIPTION_FINISHED, Admin.FINISHED);
-    adminStatusMapping.put(STATUS_DESCRIPTION_COMPLETE, Admin.COMPLETE);
-    adminStatusMapping.put(STATUS_DESCRIPTION_CONTRAINDICATED, Admin.CONTRAINDICATED);
-    adminStatusMapping.put(STATUS_DESCRIPTION_COMPLETE_FOR_SEASON, Admin.COMPLETE_FOR_SEASON);
-    adminStatusMapping.put(STATUS_DESCRIPTION_ASSUMED_COMPLETE_OR_IMMUNIE, Admin.ASSUMED_COMPLETE_OR_IMMUNE);
   }
 
-  private void addForcastItem(List<VaccineGroup> forecastItemList, String familyName, int forecastItemId) {
-    for (VaccineGroup forecastItem : forecastItemList) {
-      if (forecastItem.getVaccineGroupId() == forecastItemId) {
-        List<VaccineGroup> forecastItemListFromMap = familyMapping.get(familyName);
+  private void addForcastItem(List<ForecastItem> forecastItemList, String familyName, int forecastItemId) {
+    for (ForecastItem forecastItem : forecastItemList) {
+      if (forecastItem.getForecastItemId() == forecastItemId) {
+        List<ForecastItem> forecastItemListFromMap = familyMapping.get(familyName);
         if (forecastItemListFromMap == null) {
-          forecastItemListFromMap = new ArrayList<VaccineGroup>();
+          forecastItemListFromMap = new ArrayList<ForecastItem>();
           familyMapping.put(familyName, forecastItemListFromMap);
         }
         forecastItemListFromMap.add(forecastItem);
@@ -142,217 +99,141 @@ public class TCHConnector implements ConnectorInterface
     }
   }
 
-  public List<ForecastActual> queryForForecast(TestCase testCase, SoftwareResult softwareResult) throws Exception {
-
-    Map<String, ForecastActual> forecastActualMap = new HashMap<String, ForecastActual>();
-    List<ForecastActual> list = new ArrayList<ForecastActual>();
+  public List<ForecastActual> queryForForecast(TestCase testCase) throws Exception {
 
     StringWriter sw = new StringWriter();
-    PrintWriter logOut = null;
-    if (logText) {
-      logOut = new PrintWriter(sw);
-    }
-    try {
-      String queryString = createQueryString(testCase, software, "text");
-      if (logOut != null) {
-        logOut.println("TCH Forecaster");
-        logOut.println();
-        logOut.println("Current time " + new Date());
-        logOut.println("Connecting to " + software.getServiceUrl());
-        logOut.println("Query " + software.getServiceUrl() + queryString);
-        logOut.println();
-      }
-      URLConnection urlConn;
-      URL url = new URL(software.getServiceUrl() + queryString);
-      urlConn = url.openConnection();
-      urlConn.setDoInput(true);
-      urlConn.setDoOutput(true);
-      urlConn.setUseCaches(true);
-      urlConn.setRequestProperty("Content-Type", "text/xml; charset=\"utf-8\"");
-      urlConn.connect();
+    PrintWriter logOut = new PrintWriter(sw);
+    String queryString = createQueryString(testCase, software, "text");
+    logOut.println("TCH Forecaster");
+    logOut.println();
+    logOut.println("Current time " + new Date());
+    logOut.println("Connecting to " + software.getServiceUrl());
+    logOut.println("Query " + software.getServiceUrl() + queryString);
+    logOut.println();
+    URLConnection urlConn;
+    URL url = new URL(software.getServiceUrl() + queryString);
+    urlConn = url.openConnection();
+    urlConn.setDoInput(true);
+    urlConn.setDoOutput(true);
+    urlConn.setUseCaches(true);
+    urlConn.setRequestProperty("Content-Type", "text/xml; charset=\"utf-8\"");
+    urlConn.connect();
 
-      InputStreamReader input = null;
-      input = new InputStreamReader(urlConn.getInputStream());
-      BufferedReader in = new BufferedReader(input);
-      String line;
-      if (logOut != null) {
-        logOut.println("Results:");
-      }
-      while ((line = in.readLine()) != null) {
-        if (logOut != null) {
-          logOut.println(line);
+    InputStreamReader input = null;
+    input = new InputStreamReader(urlConn.getInputStream());
+    List<ForecastActual> list = new ArrayList<ForecastActual>();
+    BufferedReader in = new BufferedReader(input);
+    String line;
+    logOut.println("Results:");
+    while ((line = in.readLine()) != null) {
+      logOut.println(line);
+      line = line.trim();
+      if (line.startsWith("Forecasting ")) {
+        // Example lines
+        // 0 1 2 3 4 5 6 7 8 9 10 11
+        // Forecasting MMR dose 1 due 05/01/2066 valid 04/29/2006 overdue
+        // 04/29/2006 finished 10/05/2009
+        // Forecasting Hib complete
+        String[] parts = line.split("\\s");
+        if (parts.length > 2) {
+          List<ForecastItem> forecastItemListFromMap = familyMapping.get(parts[1]);
+          if (forecastItemListFromMap != null) {
+            for (ForecastItem forecastItem : forecastItemListFromMap) {
+              if (forecastItem != null) {
+                ForecastActual forecastActual = new ForecastActual();
+                forecastActual.setForecastItem(forecastItem);
+                if ("complete".equalsIgnoreCase(parts[2])) {
+                  forecastActual.setDoseNumber("COMP");
+                } else {
+                  if (parts.length > 3 && "dose".equals(parts[2])) {
+                    forecastActual.setDoseNumber(parts[3]);
+                  }
+                  if (parts.length > 5 && "due".equals(parts[4])) {
+                    forecastActual.setDueDate(parseDate(parts[5]));
+                  }
+                  if (parts.length > 7 && "valid".equals(parts[6])) {
+                    forecastActual.setValidDate(parseDate(parts[7]));
+                  }
+                  if (parts.length > 9 && "overdue".equals(parts[8])) {
+                    forecastActual.setOverdueDate(parseDate(parts[9]));
+                  }
+                  if (parts.length > 11 && "finished".equals(parts[10])) {
+                    forecastActual.setFinishedDate(parseDate(parts[11]));
+                  }
+                }
+                list.add(forecastActual);
+              }
+            }
+          }
         }
-        line = line.trim();
-        if (line.startsWith(FORECASTING)) {
-          line = line.substring(FORECASTING.length());
-          // Example line
-          // Forecasting Influenza IIV status overdue dose 1 due 08/01/2013 valid 08/01/2013 overdue 12/01/2013 finished 01/14/2159
-          int statusPos = line.indexOf(STATUS);
-          if (statusPos > 0) {
-            String vaccineType = line.substring(0, statusPos);
-            List<VaccineGroup> forecastItemListFromMap = familyMapping.get(vaccineType);
-
-            int dosePos = line.indexOf(DOSE);
-            if (dosePos == -1) {
-              dosePos = line.length();
-            }
-            String status = line.substring(statusPos + STATUS.length(), dosePos);
-            String dose = "";
-            String due = "";
-            String valid = "";
-            String overdue = "";
-            String finished = "";
-            if (dosePos < line.length()) {
-              line = line.substring(dosePos + DOSE.length());
-              int duePos = line.indexOf(DUE);
-              int validPos = line.indexOf(VALID);
-              int overduePos = line.indexOf(OVERDUE);
-              int finishedPos = line.indexOf(FINISHED);
-              if (duePos > 0) {
-                dose = line.substring(0, duePos);
-                if (validPos > duePos) {
-                  due = line.substring(duePos + DUE.length(), validPos);
-                  if (overduePos > validPos) {
-                    valid = line.substring(validPos + VALID.length(), overduePos);
-                    if (finishedPos > overduePos) {
-                      overdue = line.substring(overduePos + OVERDUE.length(), finishedPos);
-                      finished = line.substring(finishedPos + FINISHED.length());
+      } else if (line.startsWith(VACCINATION_LINE_PREFIX)) {
+        line = line.substring(VACCINATION_LINE_PREFIX.length());
+        int pos = line.indexOf(':');
+        if (pos > 0) {
+          try {
+            int i = Integer.parseInt(line.substring(0, pos).trim());
+            int count = 0;
+            for (TestEvent testEvent : testCase.getTestEventList()) {
+              if (testEvent.getEvent().getEventType() == EventType.VACCINE) {
+                count++;
+                if (count == i) {
+                  line = line.substring(pos + 1).trim();
+                  int isValidPos = line.indexOf(" is a valid ");
+                  int isInvalidPos = line.indexOf(" is an invalid ");
+                  if (isValidPos > 0 || isInvalidPos > 0) {
+                    boolean isValid = isInvalidPos == -1 && isValidPos > -1;
+                    pos = isInvalidPos + 15;
+                    if (isInvalidPos == -1) {
+                      pos = isValidPos + 12;
                     }
-                  }
-                }
-              }
-            }
-
-            Admin adminStatus = adminStatusMapping.get(status);
-            if (adminStatus == null) {
-              adminStatus = Admin.UNKNOWN;
-            }
-            Date dueDate = null;
-            Date validDate = null;
-            Date overdueDate = null;
-            Date finishedDate = null;
-            if (due.length() == 10) {
-              dueDate = parseDate(due);
-            }
-            if (valid.length() == 10) {
-              validDate = parseDate(valid);
-            }
-            if (overdue.length() == 10) {
-              overdueDate = parseDate(overdue);
-            }
-            if (finished.length() == 10) {
-              finishedDate = parseDate(finished);
-            }
-
-            if (forecastItemListFromMap != null) {
-              for (VaccineGroup forecastItem : forecastItemListFromMap) {
-                if (forecastItem != null) {
-                  ForecastActual forecastActual = new ForecastActual();
-                  forecastActual.setSoftwareResult(softwareResult);
-                  forecastActual.setVaccineGroup(forecastItem);
-                  forecastActual.setAdmin(adminStatus);
-                  if (adminStatus != Admin.COMPLETE && adminStatus != Admin.COMPLETE_FOR_SEASON
-                      && adminStatus != Admin.FINISHED) {
-                    forecastActual.setDoseNumber(dose);
-                    forecastActual.setDueDate(dueDate);
-                    forecastActual.setValidDate(validDate);
-                    forecastActual.setOverdueDate(overdueDate);
-                    forecastActual.setFinishedDate(finishedDate);
-                  }
-                  list.add(forecastActual);
-                  forecastActualMap.put(vaccineType, forecastActual);
-                }
-              }
-            }
-          }
-
-        } else if (line.startsWith(VACCINATION_LINE_PREFIX)) {
-          line = line.substring(VACCINATION_LINE_PREFIX.length());
-          int pos = line.indexOf(':');
-          if (pos > 0) {
-            try {
-              int i = Integer.parseInt(line.substring(0, pos).trim());
-              int count = 0;
-              for (TestEvent testEvent : testCase.getTestEventList()) {
-                if (testEvent.getEvent().getEventType() == EventType.VACCINE) {
-                  count++;
-                  if (count == i) {
-                    line = line.substring(pos + 1).trim();
-                    int isValidPos = line.indexOf(" is a valid ");
-                    int isInvalidPos = line.indexOf(" is an invalid ");
-                    if (isValidPos > 0 || isInvalidPos > 0) {
-                      boolean isValid = isInvalidPos == -1 && isValidPos > -1;
-                      pos = isInvalidPos + 15;
-                      if (isInvalidPos == -1) {
-                        pos = isValidPos + 12;
+                    int startPos = line.indexOf(" dose ", pos);
+                    String doseName = "";
+                    String vaccineCvx = "";
+                    String doseNumber = "";
+                    if (startPos > 0) {
+                      doseName = line.substring(pos, startPos).trim();
+                      vaccineCvx = evaluationToCvxMapping.get(doseName);
+                      if (vaccineCvx == null) {
+                        vaccineCvx = "";
                       }
-                      int startPos = line.indexOf(DOSE, pos);
-                      String doseName = "";
-                      String vaccineCvx = "";
-                      String doseNumber = "";
-                      if (startPos > 0) {
-                        doseName = line.substring(pos, startPos).trim();
-                        vaccineCvx = evaluationToCvxMapping.get(doseName);
-                        if (vaccineCvx == null) {
-                          vaccineCvx = "";
-                        }
-                        startPos += 6;
-                        int endPos = line.indexOf(".", startPos);
-                        if (endPos > 0) {
-                          doseNumber = line.substring(startPos, endPos);
-                        }
+                      startPos += 6;
+                      int endPos = line.indexOf(".", startPos);
+                      if (endPos > 0) {
+                        doseNumber = line.substring(startPos, endPos);
                       }
-                      EvaluationActual evaluationActual = new EvaluationActual();
-                      evaluationActual.setSoftwareResult(softwareResult);
-                      evaluationActual.getSoftwareResult().setSoftware(software);
-                      evaluationActual.setTestEvent(testEvent);
-                      evaluationActual.setDoseNumber(doseNumber);
-                      evaluationActual.setDoseValid(isValid ? "Y" : "N");
-                      //evaluationActual.setReasonCode(reasonCode);
-                      evaluationActual.setReasonText(line);
-                      evaluationActual.setSeriesUsedCode(vaccineCvx);
-                      evaluationActual.setSeriesUsedText(doseName);
-                      evaluationActual.setVaccineCvx(vaccineCvx);
-
-                      if (testEvent.getEvaluationActualList() == null) {
-                        testEvent.setEvaluationActualList(new ArrayList<EvaluationActual>());
-                      }
-                      testEvent.getEvaluationActualList().add(evaluationActual);
-
                     }
-                    break;
+                    EvaluationActual evaluationActual = new EvaluationActual();
+                    evaluationActual.setSoftware(software);
+                    evaluationActual.setTestEvent(testEvent);
+                    evaluationActual.setDoseNumber(doseNumber);
+                    evaluationActual.setDoseValid(isValid ? "Y" : "N");
+                    //evaluationActual.setReasonCode(reasonCode);
+                    evaluationActual.setReasonText(line);
+                    evaluationActual.setSeriesUsedCode(vaccineCvx);
+                    evaluationActual.setSeriesUsedText(doseName);
+                    evaluationActual.setVaccineCvx(vaccineCvx);
+                    
+                    if (testEvent.getEvaluationActualList() == null)
+                    {
+                      testEvent.setEvaluationActualList(new ArrayList<EvaluationActual>());
+                    }
+                    testEvent.getEvaluationActualList().add(evaluationActual);
                   }
+                  break;
                 }
               }
-            } catch (NumberFormatException nfe) {
-              // ignore
             }
-          }
-        } else if (line.startsWith(DETAILS_FOR_PREFIX)) {
-          String vaccineType = line.substring(DETAILS_FOR_PREFIX.length());
-          ForecastActual forecastActual = forecastActualMap.get(vaccineType);
-          String html = in.readLine();
-          if (forecastActual != null && html != null) {
-            forecastActual.setExplanationHtml(html);
+          } catch (NumberFormatException nfe) {
+            // ignore
           }
         }
       }
-      input.close();
-    } catch (Exception e) {
-      if (logOut != null) {
-        logOut.println("Unable to get forecast results");
-        e.printStackTrace(logOut);
-      } else {
-        e.printStackTrace();
-      }
-      throw new Exception("Unable to get forecast results", e);
-    } finally {
-      if (logOut != null) {
-        logOut.close();
-        softwareResult.setLogText(sw.toString());
-      }
     }
-
+    input.close();
+    logOut.close();
+    for (ForecastActual forecastActual : list) {
+      forecastActual.setLogText(sw.toString());
+    }
     return list;
   }
 
@@ -362,7 +243,7 @@ public class TCHConnector implements ConnectorInterface
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
 
     sb.append("?evalDate=" + sdf.format(testCase.getEvalDate()));
-    sb.append("&scheduleName=" + software.getScheduleName());
+    sb.append("&evalSchedule=");
     sb.append("&resultFormat=" + format);
     sb.append("&patientDob=" + sdf.format(testCase.getPatientDob()) + "");
     sb.append("&patientSex=" + testCase.getPatientSex() + "");
@@ -373,9 +254,6 @@ public class TCHConnector implements ConnectorInterface
         sb.append("&vaccineDate" + count + "=" + sdf.format(testEvent.getEventDate()));
         sb.append("&vaccineCvx" + count + "=" + testEvent.getEvent().getVaccineCvx());
         sb.append("&vaccineMvx" + count + "=" + testEvent.getEvent().getVaccineMvx());
-        if (testEvent.getCondition() != null) {
-          sb.append("&vaccineConditionCode" + count + "=" + testEvent.getCondition().getConditionCode());
-        }
       }
     }
 
